@@ -1,0 +1,197 @@
+{
+  "info": {
+    "name": "HRIS API - Overtime",
+    "_postman_id": "hris-overtime-collection",
+    "description": "Postman collection for HRIS Overtime API (Spring Boot)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Root",
+      "item": [
+        {
+          "name": "Server Status (Browser)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "text/html" }],
+            "url": {
+              "raw": "{{base_url}}/",
+              "host": ["{{base_url}}"],
+              "path": [""]
+            }
+          }
+        },
+        {
+          "name": "Server Status (JSON)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": {
+              "raw": "{{base_url}}/",
+              "host": ["{{base_url}}"],
+              "path": [""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Overtime",
+      "item": [
+        {
+          "name": "Create Overtime (Single)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"employeeNip\": \"EMP001\",\n  \"employeeName\": \"Budi Santoso\",\n  \"overtimeStartTime\": \"2026-03-17 18:00:00\",\n  \"overtimeEndTime\": \"2026-03-17 21:00:00\",\n  \"reason\": \"Deadline project Q1\",\n  \"status\": \"PENDING\"\n}",
+              "options": {
+                "raw": { "language": "json" }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/overtime",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "overtime"]
+            }
+          }
+        },
+        {
+          "name": "Import Overtime (Bulk via Excel)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "",
+                  "description": "Upload .xlsx file with columns: NIP Karyawan, Nama Karyawan, Waktu Mulai Lembur, Waktu Selesai Lembur, Alasan, Status"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/overtime/import",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "overtime", "import"]
+            }
+          }
+        },
+        {
+          "name": "Search Overtime (with pagination)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/overtime?keyword=Budi&status=PENDING&page=0&size=10&sortBy=createdDate&sortDir=desc",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "overtime"],
+              "query": [
+                {
+                  "key": "keyword",
+                  "value": "Budi",
+                  "description": "Search by NIP or name"
+                },
+                {
+                  "key": "status",
+                  "value": "PENDING",
+                  "description": "APPROVED | PENDING | REJECTED"
+                },
+                {
+                  "key": "page",
+                  "value": "0",
+                  "description": "Page number (0-based)"
+                },
+                {
+                  "key": "size",
+                  "value": "10",
+                  "description": "Records per page"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "createdDate",
+                  "description": "Field to sort by"
+                },
+                {
+                  "key": "sortDir",
+                  "value": "desc",
+                  "description": "asc | desc"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Overtime by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/overtime/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "overtime", "1"]
+            }
+          }
+        },
+        {
+          "name": "Update Overtime",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"employeeNip\": \"EMP001\",\n  \"employeeName\": \"Budi Santoso\",\n  \"overtimeStartTime\": \"2026-03-17 18:00:00\",\n  \"overtimeEndTime\": \"2026-03-17 22:00:00\",\n  \"reason\": \"Deadline project Q1 (updated)\",\n  \"status\": \"APPROVED\"\n}",
+              "options": {
+                "raw": { "language": "json" }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/overtime/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "overtime", "1"]
+            }
+          }
+        },
+        {
+          "name": "Delete Overtime",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/overtime/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "overtime", "1"]
+            }
+          }
+        },
+        {
+          "name": "Export Monthly Excel",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/overtime/export?year=2026&month=3",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "overtime", "export"],
+              "query": [
+                { "key": "year", "value": "2026" },
+                { "key": "month", "value": "3" }
+              ]
+            },
+            "description": "Downloads overtime_2026_03.xlsx. In Postman, set 'Send and Download' to save the file."
+          }
+        }
+      ]
+    }
+  ]
+}
